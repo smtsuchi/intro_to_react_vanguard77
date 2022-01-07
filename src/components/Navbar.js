@@ -28,14 +28,34 @@ export default class Navbar extends Component {
                                     <Link className="nav-link" to="/contact">Contact</Link>
                                 </li>
                                 <li className="nav-item">
-                                    <Link className="nav-link" to="/about">About</Link>
-                                </li>
-                                <li className="nav-item">
                                     <Link className="nav-link" to="/shop">Shop</Link>
                                 </li>
                                 <li className="nav-item">
                                     <Link className="nav-link" to="/news">News</Link>
                                 </li>
+
+                                {
+                                    this.props.isLoggedIn ? (
+                                        <>
+                                            <li className="nav-item">
+                                                <button className="nav-link" >Log Out</button>
+                                            </li>
+                                            <li className="nav-item">
+                                                <p className="nav-link" >Hello, {this.props.currentUser.username}</p>
+                                            </li>
+                                        </>
+                                    ) : (
+                                        <>
+                                        <li className="nav-item">
+                                                <Link className="nav-link" to="/login">Login</Link>
+                                            </li>
+                                            <li className="nav-item">
+                                                <Link className="nav-link" to="/register">Register</Link>
+                                            </li>
+                                        </>
+
+                                    )
+                                }
 
                                 <li className="nav-item">
                                     <Link to='/cart' className="nav-link"><i className="fas fa-cart-plus"></i>{this.props.cart.length}|{this.props.sumTotalCart(this.props.cart)}</Link>
