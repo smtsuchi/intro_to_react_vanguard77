@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, Navigate } from 'react-router-dom';
 
 export default class Register extends Component {
     constructor(){
@@ -27,12 +27,14 @@ export default class Register extends Component {
         const data = await res.json();
         console.log(data);
         if (data.status === 'success'){
-            return res.redirect("/login");
+            return this.setState({redirect: '/login'});
         }
     }
 
     render() {
+        
         return (
+            this.state.redirect ? <Navigate to='/login' />:
             <>
             <div className='container'>
                 <form onSubmit={(e)=>{this.sendCredentials(e)}}>

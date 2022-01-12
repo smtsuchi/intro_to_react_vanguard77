@@ -10,16 +10,29 @@ import Cart from './views/Cart';
 import Login from './views/Login';
 import Register from './views/Register';
 import Blog from './views/Blog';
+import ShopStripe from './views/ShopStripe';
 
 export default class Elephant extends Component {
   constructor() {
     super();
     console.log("I was created")
-    this.state = {
-      isLoggedIn: false,
-      currentUser: null,
-      products: [],
-      cart: []
+    const user = localStorage.getItem('vanguard_user');
+    const test = localStorage.getItem('testfdhjkashas');
+    console.log(test)
+    if (user) {
+      this.state = {
+        isLoggedIn: true,
+        currentUser: JSON.parse(user),
+        products: [],
+        cart: []
+      }
+    }else {
+      this.state = {
+        isLoggedIn: false,
+        currentUser: null,
+        products: [],
+        cart: []
+      }
     }
   }
 
@@ -28,12 +41,21 @@ export default class Elephant extends Component {
       isLoggedIn: true,
       currentUser: user
     })
+    localStorage.setItem('vanguard_user',JSON.stringify(user))
+  }
+  logMeOut = () => {
+    this.setState({
+      isLoggedIn: false,
+      currentUser: {}
+    })
+    localStorage.removeItem('vanguard_user');
   }
 
   addToCart = (product) => {
     this.setState({
       cart: this.state.cart.concat(product)
     })
+    
   }
   removeFromCart = (product) => {
     let newCart = [...this.state.cart];
@@ -77,7 +99,7 @@ export default class Elephant extends Component {
     console.log("I rendered");
     return (
       <div>
-        <Navbar isLoggedIn={this.state.isLoggedIn} currentUser={this.state.currentUser} cart={this.state.cart} sumTotalCart={this.sumTotalCart}/>
+        <Navbar isLoggedIn={this.state.isLoggedIn} logMeOut={this.logMeOut} currentUser={this.state.currentUser} cart={this.state.cart} sumTotalCart={this.sumTotalCart}/>
         <Routes>
           <Route path='/' element={<Home/> }/>
           <Route path='/shop' element={<Shop products={this.state.products} addToCart={this.addToCart}/> }/>
@@ -88,6 +110,7 @@ export default class Elephant extends Component {
           <Route path='/blog' element={<Blog />}/>
           <Route path='/login' element={<Login logMeIn={this.logMeIn}/>}/>
           <Route path='/register' element={<Register />}/>
+          <Route path='/stripe/shop' element={<ShopStripe />}/>
         </Routes>
       </div>
     )
